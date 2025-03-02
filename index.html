@@ -3,34 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doğrudan İndiren Video İndirici</title>
+    <title>Kolay Video İndirici</title>
     <style>
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #0ea5e9;
-            --bg-color: #f8fafc;
-            --text-color: #1e293b;
-            --card-bg: #ffffff;
-            --border-color: #e2e8f0;
-            --success-color: #10b981;
-            --error-color: #ef4444;
-            --warning-color: #f59e0b;
-        }
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
+            background-color: #f0f2f5;
             margin: 0;
             padding: 0;
+            line-height: 1.6;
+            color: #333;
         }
+        
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
         }
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        
+        .header {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
             color: white;
             text-align: center;
             padding: 30px 20px;
@@ -38,1086 +29,433 @@
             margin-bottom: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        h1 {
+        
+        .header h1 {
             margin: 0;
             font-size: 28px;
             font-weight: 700;
         }
-        .tagline {
-            font-size: 16px;
+        
+        .header p {
+            margin-top: 10px;
             opacity: 0.9;
-            margin-top: 8px;
         }
+        
         .card {
-            background-color: var(--card-bg);
+            background: white;
             border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            padding: 24px;
+        }
+        
+        .tab-container {
             margin-bottom: 20px;
         }
-        .form-group {
+        
+        .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
             margin-bottom: 20px;
         }
-        label {
-            display: block;
-            margin-bottom: 8px;
+        
+        .tab-button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 16px;
             font-weight: 500;
-            color: var(--text-color);
+            color: #64748b;
+            border-bottom: 2px solid transparent;
         }
-        input, select, button {
+        
+        .tab-button:hover {
+            color: #3b82f6;
+        }
+        
+        .tab-button.active {
+            color: #3b82f6;
+            border-bottom-color: #3b82f6;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        input[type="text"] {
             width: 100%;
             padding: 12px;
-            border: 1px solid var(--border-color);
+            box-sizing: border-box;
+            border: 1px solid #ddd;
             border-radius: 8px;
             font-size: 16px;
-            box-sizing: border-box;
+            margin-bottom: 15px;
         }
-        input:focus, select:focus {
-            border-color: var(--primary-color);
+        
+        input[type="text"]:focus {
             outline: none;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
         }
+        
         button {
-            background-color: var(--primary-color);
+            background: #3b82f6;
             color: white;
             border: none;
-            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 48px;
-        }
-        button:hover {
-            background-color: #1d4ed8;
-        }
-        button:disabled {
-            background-color: #93c5fd;
-            cursor: not-allowed;
-        }
-        .help-text {
-            font-size: 14px;
-            color: #64748b;
-            margin-top: 6px;
-        }
-        .status-box {
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            display: none;
-            animation: fadeIn 0.3s;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .status-box.info {
-            background-color: #eff6ff;
-            color: #1e40af;
-            border-left: 4px solid #3b82f6;
-            display: block;
-        }
-        .status-box.success {
-            background-color: #f0fdf4;
-            color: #166534;
-            border-left: 4px solid var(--success-color);
-            display: block;
-        }
-        .status-box.error {
-            background-color: #fef2f2;
-            color: #991b1b;
-            border-left: 4px solid var(--error-color);
-            display: block;
-        }
-        .status-box.warning {
-            background-color: #fffbeb;
-            color: #92400e;
-            border-left: 4px solid var(--warning-color);
-            display: block;
-        }
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid white;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-            margin-right: 10px;
-            display: none;
-        }
-        button.loading .spinner {
-            display: inline-block;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        #video-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            display: none;
-        }
-        #video-info.show {
-            display: flex;
-        }
-        #video-thumbnail {
-            width: 120px;
-            height: 90px;
-            border-radius: 8px;
-            object-fit: cover;
-            margin-right: 15px;
-        }
-        .video-details {
-            flex: 1;
-        }
-        .video-title {
+            font-size: 16px;
             font-weight: 600;
-            font-size: 18px;
-            margin-bottom: 5px;
+            width: 100%;
+            transition: background 0.2s;
         }
-        .video-meta {
-            color: #64748b;
-            font-size: 14px;
+        
+        button:hover {
+            background: #2563eb;
         }
-        .download-options {
+        
+        .quality-options {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 15px;
             margin-top: 20px;
         }
-        .download-option {
-            border: 1px solid var(--border-color);
+        
+        .quality-option {
+            border: 1px solid #e2e8f0;
             border-radius: 8px;
             padding: 15px;
             text-align: center;
-            transition: all 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .download-option:hover {
-            border-color: var(--primary-color);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        
+        .quality-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
-        .download-option h3 {
+        
+        .quality-option h3 {
             margin: 0 0 8px 0;
-            color: var(--text-color);
             font-size: 16px;
         }
-        .download-option p {
+        
+        .quality-option p {
             color: #64748b;
             font-size: 14px;
             margin: 0 0 15px 0;
         }
-        .download-btn {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 8px 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            font-size: 14px;
-            text-decoration: none;
+        
+        .quality-option .download-btn {
             display: inline-block;
-        }
-        .download-btn:hover {
-            background-color: #1d4ed8;
-        }
-        .download-btn.secondary {
-            background-color: #e2e8f0;
-            color: #475569;
-        }
-        .download-btn.secondary:hover {
-            background-color: #cbd5e1;
-        }
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-            color: #64748b;
+            background: #3b82f6;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
             font-size: 14px;
-        }
-        .hidden {
-            display: none !important;
-        }
-        .fade-in {
-            animation: fadeIn 0.5s;
-        }
-        #progress-container {
-            margin: 20px 0;
-            display: none;
-        }
-        #progress-bar {
-            height: 10px;
-            background-color: #e2e8f0;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        #progress-fill {
-            height: 100%;
-            background-color: var(--primary-color);
-            width: 0%;
-            transition: width 0.3s;
-        }
-        #progress-text {
-            text-align: right;
-            font-size: 14px;
-            color: #64748b;
-            margin-top: 5px;
-        }
-        .tab-container {
-            margin-bottom: 20px;
-        }
-        .tab-buttons {
-            display: flex;
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 20px;
-        }
-        .tab-button {
-            padding: 10px 20px;
-            border: none;
-            background-color: transparent;
-            cursor: pointer;
-            font-size: 16px;
             font-weight: 500;
-            color: #64748b;
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-            width: auto;
         }
-        .tab-button:hover {
-            color: var(--primary-color);
+        
+        .quality-option .download-btn:hover {
+            background: #2563eb;
         }
-        .tab-button.active {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            background-color: transparent;
-        }
-        .tab-content {
+        
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
             display: none;
         }
-        .tab-content.active {
+        
+        .status-message.info {
+            background-color: #e0f2fe;
+            color: #0369a1;
             display: block;
-            animation: fadeIn 0.3s;
         }
+        
+        .status-message.success {
+            background-color: #dcfce7;
+            color: #166534;
+            display: block;
+        }
+        
+        .status-message.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+            display: block;
+        }
+        
+        .platforms {
+            margin-top: 20px;
+        }
+        
+        .platform-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .platform-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .platform-card h3 {
+            margin: 0 0 8px 0;
+            color: #3b82f6;
+        }
+        
+        .platform-card p {
+            margin: 0;
+            color: #64748b;
+        }
+        
         @media (max-width: 768px) {
-            header {
-                padding: 20px 15px;
-            }
-            h1 {
-                font-size: 24px;
-            }
-            .download-options {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-            .tab-button {
-                padding: 10px 15px;
-                font-size: 14px;
-            }
-            #video-thumbnail {
-                width: 100px;
-                height: 75px;
+            .quality-options {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Doğrudan Video İndirici</h1>
-            <p class="tagline">YouTube, Twitter, Instagram ve diğer platformlardan direkt indirme</p>
-        </header>
-
+        <div class="header">
+            <h1>Kolay Video İndirici</h1>
+            <p>YouTube, Instagram, TikTok ve diğer platformlardan hızlı video indirme</p>
+        </div>
+        
         <div class="card">
             <div class="tab-container">
                 <div class="tab-buttons">
                     <button class="tab-button active" data-tab="youtube">YouTube</button>
-                    <button class="tab-button" data-tab="twitter">Twitter</button>
                     <button class="tab-button" data-tab="instagram">Instagram</button>
-                    <button class="tab-button" data-tab="other">Diğer</button>
+                    <button class="tab-button" data-tab="tiktok">TikTok</button>
+                    <button class="tab-button" data-tab="twitter">Twitter</button>
                 </div>
                 
                 <div class="tab-content active" id="youtube-tab">
-                    <div class="form-group">
-                        <label for="youtube-url">YouTube Video URL'si</label>
-                        <input type="text" id="youtube-url" placeholder="https://www.youtube.com/watch?v=..." autocomplete="off">
-                        <p class="help-text">YouTube video linkini yapıştırın</p>
-                    </div>
+                    <h2>YouTube Video İndir</h2>
+                    <input type="text" id="youtube-url" placeholder="YouTube video URL'sini yapıştırın">
+                    <button id="youtube-btn">İndirme Seçeneklerini Göster</button>
                     
-                    <button id="youtube-analyze-btn">
-                        <span class="spinner"></span>
-                        <span class="btn-text">Video Analiz Et</span>
-                    </button>
-                </div>
-                
-                <div class="tab-content" id="twitter-tab">
-                    <div class="form-group">
-                        <label for="twitter-url">Twitter Video URL'si</label>
-                        <input type="text" id="twitter-url" placeholder="https://twitter.com/..." autocomplete="off">
-                        <p class="help-text">Twitter video linkini yapıştırın</p>
-                    </div>
+                    <div id="youtube-status" class="status-message"></div>
                     
-                    <button id="twitter-analyze-btn">
-                        <span class="spinner"></span>
-                        <span class="btn-text">Video Analiz Et</span>
-                    </button>
+                    <div id="youtube-options" class="quality-options" style="display:none">
+                        <!-- Burada indirme seçenekleri gösterilecek -->
+                    </div>
                 </div>
                 
                 <div class="tab-content" id="instagram-tab">
-                    <div class="form-group">
-                        <label for="instagram-url">Instagram Post URL'si</label>
-                        <input type="text" id="instagram-url" placeholder="https://www.instagram.com/p/..." autocomplete="off">
-                        <p class="help-text">Instagram video veya reel linkini yapıştırın</p>
-                    </div>
+                    <h2>Instagram Video İndir</h2>
+                    <input type="text" id="instagram-url" placeholder="Instagram post URL'sini yapıştırın">
+                    <button id="instagram-btn">İndirme Sayfasını Aç</button>
                     
-                    <button id="instagram-analyze-btn">
-                        <span class="spinner"></span>
-                        <span class="btn-text">Video Analiz Et</span>
-                    </button>
+                    <div id="instagram-status" class="status-message"></div>
                 </div>
                 
-                <div class="tab-content" id="other-tab">
-                    <div class="form-group">
-                        <label for="other-url">Video URL'si</label>
-                        <input type="text" id="other-url" placeholder="https://..." autocomplete="off">
-                        <p class="help-text">Diğer platformlardan video linkini yapıştırın (Facebook, TikTok vb.)</p>
-                    </div>
+                <div class="tab-content" id="tiktok-tab">
+                    <h2>TikTok Video İndir</h2>
+                    <input type="text" id="tiktok-url" placeholder="TikTok video URL'sini yapıştırın">
+                    <button id="tiktok-btn">İndirme Sayfasını Aç</button>
                     
-                    <button id="other-analyze-btn">
-                        <span class="spinner"></span>
-                        <span class="btn-text">Video Analiz Et</span>
-                    </button>
+                    <div id="tiktok-status" class="status-message"></div>
+                </div>
+                
+                <div class="tab-content" id="twitter-tab">
+                    <h2>Twitter Video İndir</h2>
+                    <input type="text" id="twitter-url" placeholder="Twitter URL'sini yapıştırın">
+                    <button id="twitter-btn">İndirme Sayfasını Aç</button>
+                    
+                    <div id="twitter-status" class="status-message"></div>
                 </div>
             </div>
-            
-            <div id="status-box" class="status-box"></div>
-            
-            <div id="progress-container">
-                <div id="progress-bar"><div id="progress-fill"></div></div>
-                <div id="progress-text">0%</div>
-            </div>
-
-            <div id="video-info">
-                <img id="video-thumbnail" src="" alt="Video thumbnail">
-                <div class="video-details">
-                    <div id="video-title" class="video-title"></div>
-                    <div id="video-meta" class="video-meta"></div>
-                </div>
-            </div>
-            
-            <div id="download-options" class="download-options"></div>
         </div>
-
+        
         <div class="card">
             <h2>Nasıl Kullanılır?</h2>
             <ol>
-                <li>Video platformunu seçin (YouTube, Twitter vb.)</li>
-                <li>Video URL'sini ilgili alana yapıştırın</li>
-                <li>"Video Analiz Et" butonuna tıklayın</li>
-                <li>Görüntülenen indirme seçeneklerinden istediğinizi seçin</li>
-                <li>İndirme işlemi otomatik olarak başlayacaktır</li>
+                <li>Videoyu indirmek istediğiniz platform sekmesini seçin</li>
+                <li>Video URL'sini giriş kutusuna yapıştırın</li>
+                <li>İndirme butonuna tıklayın</li>
+                <li>YouTube videoları için, farklı kalite seçeneklerinden seçim yapabilirsiniz</li>
+                <li>Diğer platformlar için, doğrudan indirme sitesine yönlendirilirsiniz</li>
             </ol>
-            <p><strong>Not:</strong> Bazı tarayıcılar güvenlik nedeniyle indirme işlemini engelleyebilir. Bu durumda alternatif indirme seçeneklerini kullanabilirsiniz.</p>
+            
+            <p><strong>Not:</strong> Bu uygulama kişisel kullanım içindir. Lütfen telif hakkı olan içerikleri izinsiz indirmeyin.</p>
         </div>
-        
-        <footer>
-            <p>Bu uygulama kişisel kullanım içindir. Lütfen telif hakkı olan içerikleri izinsiz indirmeyin.</p>
-            <p>&copy; 2023 Doğrudan Video İndirici</p>
-        </footer>
     </div>
-
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Tab switching functionality
+            // Tab işlevselliği
             const tabButtons = document.querySelectorAll('.tab-button');
             const tabContents = document.querySelectorAll('.tab-content');
             
             tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const tabId = button.dataset.tab;
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
                     
-                    // Remove active class from all buttons and tabs
+                    // Tüm tab ve içerikleri temizle
                     tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabContents.forEach(tab => tab.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
                     
-                    // Add active class to current button and tab
-                    button.classList.add('active');
-                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                    // Seçilen tab ve içeriği aktif et
+                    this.classList.add('active');
+                    document.getElementById(tabId + '-tab').classList.add('active');
                 });
             });
             
-            // Common variables
-            const statusBox = document.getElementById('status-box');
-            const videoInfo = document.getElementById('video-info');
-            const videoThumbnail = document.getElementById('video-thumbnail');
-            const videoTitle = document.getElementById('video-title');
-            const videoMeta = document.getElementById('video-meta');
-            const downloadOptions = document.getElementById('download-options');
-            const progressContainer = document.getElementById('progress-container');
-            const progressFill = document.getElementById('progress-fill');
-            const progressText = document.getElementById('progress-text');
+            // YouTube işlevselliği
+            const youtubeUrlInput = document.getElementById('youtube-url');
+            const youtubeBtn = document.getElementById('youtube-btn');
+            const youtubeStatus = document.getElementById('youtube-status');
+            const youtubeOptions = document.getElementById('youtube-options');
             
-            // Setup buttons
-            setupYouTubeAnalysis();
-            setupTwitterAnalysis();
-            setupInstagramAnalysis();
-            setupOtherAnalysis();
-            
-            // YouTube functionality
-            function setupYouTubeAnalysis() {
-                const youtubeUrlInput = document.getElementById('youtube-url');
-                const youtubeAnalyzeBtn = document.getElementById('youtube-analyze-btn');
+            youtubeBtn.addEventListener('click', function() {
+                const url = youtubeUrlInput.value.trim();
                 
-                youtubeAnalyzeBtn.addEventListener('click', () => {
-                    const url = youtubeUrlInput.value.trim();
-                    if (!url) {
-                        showStatus('Lütfen bir YouTube URL\'si girin', 'error');
-                        return;
-                    }
-                    
-                    // Validate YouTube URL
-                    const videoId = extractYouTubeVideoId(url);
-                    if (!videoId) {
-                        showStatus('Geçersiz YouTube URL\'si', 'error');
-                        return;
-                    }
-                    
-                    // Set loading state
-                    setButtonLoading(youtubeAnalyzeBtn, true);
-                    showStatus('YouTube videosu analiz ediliyor...', 'info');
-                    resetDownloadSection();
-
-                    // Daha güvenilir API seçenekleri
-                    const apiEndpoints = [
-                        `https://pipedapi.kavin.rocks/streams/${videoId}`,
-                        `https://pipedapi.tokhmi.xyz/streams/${videoId}`,
-                        `https://ytapi.vern.cc/streams/${videoId}`,
-                        `https://invidious.snopyta.org/api/v1/videos/${videoId}`
-                    ];
-                    
-                    // İlk çalışan API'yi kullan - Promise.any ile ilk başarılı olan API'yi al
-                    Promise.any(apiEndpoints.map(endpoint => 
-                        fetch(corsProxy(endpoint))
-                            .then(resp => {
-                                if (!resp.ok) throw new Error('API yanıt vermedi');
-                                return resp.json();
-                            })
-                    ))
-                    .then(data => {
-                        // Display video information
-                        displayYouTubeVideoInfo(data, videoId);
-                        
-                        // Display download options using successful API data
-                        showEnhancedYouTubeDownloadOptions(data, videoId);
-                        
-                        showStatus('Video analizi tamamlandı! İndirme seçeneklerini görebilirsiniz.', 'success');
-                    })
-                    .catch(error => {
-                        console.error('API error:', error);
-                        showStatus('Video bilgilerine erişilemiyor, basit indirme seçenekleri kullanılacak', 'warning');
-                        
-                        // Show basic video info with thumbnail only
-                        displayBasicVideoInfo(videoId);
-                        
-                        // Use fallback direct download links
-                        showFallbackYouTubeOptions(videoId);
-                    })
-                    .finally(() => {
-                        setButtonLoading(youtubeAnalyzeBtn, false);
-                    });
-                });
-            }
-            
-            // Twitter functionality with improved API approach
-            function setupTwitterAnalysis() {
-                const twitterUrlInput = document.getElementById('twitter-url');
-                const twitterAnalyzeBtn = document.getElementById('twitter-analyze-btn');
+                if (!url) {
+                    showStatus(youtubeStatus, 'Lütfen bir YouTube URL\'si girin', 'error');
+                    return;
+                }
                 
-                twitterAnalyzeBtn.addEventListener('click', () => {
-                    const url = twitterUrlInput.value.trim();
-                    if (!url) {
-                        showStatus('Lütfen bir Twitter URL\'si girin', 'error');
-                        return;
-                    }
-                    
-                    // Set loading state
-                    setButtonLoading(twitterAnalyzeBtn, true);
-                    showStatus('Twitter videosu analiz ediliyor...', 'info');
-                    resetDownloadSection();
-                    
-                    // Daha güvenilir Twitter video analizi
-                    const tweetId = extractTwitterId(url);
-                    
-                    if (tweetId) {
-                        // API deneme 1: TwitterHandle.com API
-                        fetch(corsProxy(`https://api.fxtwitter.com/status/${tweetId}`))
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data && data.tweet && data.tweet.media && 
-                                    data.tweet.media.videos && data.tweet.media.videos.length > 0) {
-                                    
-                                    // Video information found, display it
-                                    const twitterData = {
-                                        title: data.tweet.text || "Twitter Video",
-                                        author: data.tweet.author.name || "Twitter User",
-                                        videoUrl: data.tweet.media.videos[0].url,
-                                        thumbnail: data.tweet.media.photos?.[0]?.url || "https://abs.twimg.com/responsive-web/client-web/icon-default.522d363a.png"
-                                    };
-                                    
-                                    displayTwitterVideoInfo(twitterData);
-                                    showStatus('Twitter videosu bulundu!', 'success');
-                                } else {
-                                    throw new Error('Video bulunamadı');
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Twitter API error:', error);
-                                showStatus('Twitter video bilgileri alınamadı, alternatif servisler gösteriliyor', 'warning');
-                                showAlternativeTwitterOptions(url);
-                            })
-                            .finally(() => {
-                                setButtonLoading(twitterAnalyzeBtn, false);
-                            });
-                    } else {
-                        showStatus('Geçersiz Twitter URL\'si', 'error');
-                        setButtonLoading(twitterAnalyzeBtn, false);
-                    }
-                });
-            }
-            
-            // Instagram functionality with more direct options
-            function setupInstagramAnalysis() {
-                const instagramUrlInput = document.getElementById('instagram-url');
-                const instagramAnalyzeBtn = document.getElementById('instagram-analyze-btn');
+                // Video ID'sini çıkar
+                const videoId = extractYouTubeVideoId(url);
                 
-                instagramAnalyzeBtn.addEventListener('click', () => {
-                    const url = instagramUrlInput.value.trim();
-                    if (!url) {
-                        showStatus('Lütfen bir Instagram URL\'si girin', 'error');
-                        return;
-                    }
-                    
-                    // Set loading state
-                    setButtonLoading(instagramAnalyzeBtn, true);
-                    showStatus('Instagram içeriği analiz ediliyor...', 'info');
-                    resetDownloadSection();
-                    
-                    // Instagram is very restrictive and requires authentication
-                    // We'll provide alternative methods instead
-                    displayBasicInstagramInfo(url);
-                    showInstagramDownloadOptions(url);
-                    
-                    showStatus('Instagram için direkt indirme API\'leri kısıtlıdır. Alternatif indirme seçenekleri sunuldu.', 'warning');
-                    setButtonLoading(instagramAnalyzeBtn, false);
-                });
-            }
-            
-            // Other platforms functionality
-            function setupOtherAnalysis() {
-                const otherUrlInput = document.getElementById('other-url');
-                const otherAnalyzeBtn = document.getElementById('other-analyze-btn');
+                if (!videoId) {
+                    showStatus(youtubeStatus, 'Geçersiz YouTube URL\'si', 'error');
+                    return;
+                }
                 
-                otherAnalyzeBtn.addEventListener('click', () => {
-                    const url = otherUrlInput.value.trim();
-                    if (!url) {
-                        showStatus('Lütfen bir URL girin', 'error');
-                        return;
-                    }
-                    
-                    // Set loading state
-                    setButtonLoading(otherAnalyzeBtn, true);
-                    showStatus('URL analiz ediliyor...', 'info');
-                    resetDownloadSection();
-                    
-                    // Detect platform
-                    const platform = detectPlatform(url);
-                    
-                    // Display basic info based on platform
-                    displayBasicPlatformInfo(url, platform);
-                    
-                    // Show appropriate download options
-                    switch (platform) {
-                        case 'tiktok':
-                            showTiktokDownloadOptions(url);
-                            break;
-                        case 'facebook':
-                            showFacebookDownloadOptions(url);
-                            break;
-                        case 'reddit':
-                            showRedditDownloadOptions(url);
-                            break;
-                        default:
-                            showGenericDownloadOptions(url);
-                            break;
-                    }
-                    
-                    showStatus(`${platform.toUpperCase()} platformu algılandı. İndirme seçenekleri sunuldu.`, 'success');
-                    setButtonLoading(otherAnalyzeBtn, false);
-                });
-            }
+                showStatus(youtubeStatus, 'İndirme seçenekleri hazırlanıyor...', 'info');
+                
+                // Basit ve garanti çalışacak bir yaklaşım kullanıyoruz - API çağrıları yapmadan
+                setTimeout(() => {
+                    // Kalite seçeneklerini göster
+                    showYouTubeOptions(videoId);
+                    showStatus(youtubeStatus, 'İndirme seçenekleri hazır!', 'success');
+                }, 1000);
+            });
             
-            // Helper functions
+            // Instagram işlevselliği
+            const instagramUrlInput = document.getElementById('instagram-url');
+            const instagramBtn = document.getElementById('instagram-btn');
+            const instagramStatus = document.getElementById('instagram-status');
+            
+            instagramBtn.addEventListener('click', function() {
+                const url = instagramUrlInput.value.trim();
+                
+                if (!url) {
+                    showStatus(instagramStatus, 'Lütfen bir Instagram URL\'si girin', 'error');
+                    return;
+                }
+                
+                showStatus(instagramStatus, 'İndirme sayfası açılıyor...', 'info');
+                
+                // Instagram indirme servisi
+                const downloadUrl = `https://snapinsta.app/?url=${encodeURIComponent(url)}`;
+                window.open(downloadUrl, '_blank');
+                
+                showStatus(instagramStatus, 'İndirme sayfası açıldı! Yönlendirilen siteden videoyu indirebilirsiniz.', 'success');
+            });
+            
+            // TikTok işlevselliği
+            const tiktokUrlInput = document.getElementById('tiktok-url');
+            const tiktokBtn = document.getElementById('tiktok-btn');
+            const tiktokStatus = document.getElementById('tiktok-status');
+            
+            tiktokBtn.addEventListener('click', function() {
+                const url = tiktokUrlInput.value.trim();
+                
+                if (!url) {
+                    showStatus(tiktokStatus, 'Lütfen bir TikTok URL\'si girin', 'error');
+                    return;
+                }
+                
+                showStatus(tiktokStatus, 'İndirme sayfası açılıyor...', 'info');
+                
+                // TikTok indirme servisi
+                const downloadUrl = `https://snaptik.app/en?url=${encodeURIComponent(url)}`;
+                window.open(downloadUrl, '_blank');
+                
+                showStatus(tiktokStatus, 'İndirme sayfası açıldı! Yönlendirilen siteden videoyu indirebilirsiniz.', 'success');
+            });
+            
+            // Twitter işlevselliği
+            const twitterUrlInput = document.getElementById('twitter-url');
+            const twitterBtn = document.getElementById('twitter-btn');
+            const twitterStatus = document.getElementById('twitter-status');
+            
+            twitterBtn.addEventListener('click', function() {
+                const url = twitterUrlInput.value.trim();
+                
+                if (!url) {
+                    showStatus(twitterStatus, 'Lütfen bir Twitter URL\'si girin', 'error');
+                    return;
+                }
+                
+                showStatus(twitterStatus, 'İndirme sayfası açılıyor...', 'info');
+                
+                // Twitter indirme servisi
+                const downloadUrl = `https://twitsave.com/?url=${encodeURIComponent(url)}`;
+                window.open(downloadUrl, '_blank');
+                
+                showStatus(twitterStatus, 'İndirme sayfası açıldı! Yönlendirilen siteden videoyu indirebilirsiniz.', 'success');
+            });
+            
+            // Yardımcı fonksiyonlar
             function extractYouTubeVideoId(url) {
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+                const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
                 const match = url.match(regExp);
-                return (match && match[2].length === 11) ? match[2] : null;
+                return (match && match[7].length === 11) ? match[7] : null;
             }
             
-            function extractTwitterId(url) {
-                // Twitter URL pattern: https://twitter.com/username/status/1234567890
-                const regExp = /twitter\.com\/[^\/]+\/status\/(\d+)/i;
-                const match = url.match(regExp);
-                return match ? match[1] : null;
+            function showStatus(element, message, type) {
+                element.textContent = message;
+                element.className = 'status-message ' + type;
             }
             
-            function detectPlatform(url) {
-                if (url.includes('tiktok.com')) return 'tiktok';
-                if (url.includes('facebook.com') || url.includes('fb.watch')) return 'facebook';
-                if (url.includes('reddit.com')) return 'reddit';
-                return 'unknown';
-            }
-            
-            function showStatus(message, type) {
-                statusBox.textContent = message;
-                statusBox.className = `status-box ${type}`;
-            }
-            
-            function setButtonLoading(button, isLoading) {
-                const spinner = button.querySelector('.spinner');
-                if (isLoading) {
-                    button.disabled = true;
-                    spinner.style.display = 'inline-block';
-                } else {
-                    button.disabled = false;
-                    spinner.style.display = 'none';
-                }
-            }
-            
-            function resetDownloadSection() {
-                videoInfo.classList.remove('show');
-                downloadOptions.innerHTML = '';
-                progressContainer.style.display = 'none';
-                progressFill.style.width = '0%';
-                progressText.textContent = '0%';
-            }
-            
-            // Display functions
-            function displayYouTubeVideoInfo(data, videoId) {
-                // Varsa API'den alınan thumbnail kullan, yoksa YouTube thumbnail API'si kullan
-                const thumbnailUrl = data.thumbnailUrl || data.videoThumbnails?.[0]?.url || 
-                                     `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-                                     
-                // Başlık ve kanal bilgisi
-                const title = data.title || 'YouTube Video';
-                const author = data.uploader || data.author || 'YouTube';
-                const duration = formatDuration(data.duration || data.lengthSeconds || 0);
-                
-                videoThumbnail.src = thumbnailUrl;
-                videoTitle.textContent = title;
-                videoMeta.textContent = `${author} | ${duration}`;
-                videoInfo.classList.add('show');
-            }
-            
-            function displayBasicYouTubeInfo(data, videoId) {
-                videoThumbnail.src = data.thumbnail_url || `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`;
-                videoTitle.textContent = data.title || 'YouTube Video';
-                videoMeta.textContent = data.author_name || 'YouTube';
-                videoInfo.classList.add('show');
-            }
-            
-            function displayBasicTwitterInfo(url) {
-                const tweetId = url.split('/').pop().split('?')[0];
-                videoThumbnail.src = 'https://abs.twimg.com/responsive-web/client-web/icon-default.522d363a.png';
-                videoTitle.textContent = 'Twitter Video';
-                videoMeta.textContent = `Tweet ID: ${tweetId}`;
-                videoInfo.classList.add('show');
-            }
-            
-            function displayBasicInstagramInfo(url) {
-                videoThumbnail.src = 'https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png';
-                videoTitle.textContent = 'Instagram Video/Reel';
-                videoMeta.textContent = url;
-                videoInfo.classList.add('show');
-            }
-            
-            function displayBasicPlatformInfo(url, platform) {
-                switch(platform) {
-                    case 'tiktok':
-                        videoThumbnail.src = 'https://sf16-scmcdn-va.ibytedtos.com/goofy/tiktok/web/node/_next/static/images/logo-black-3825e22b.svg';
-                        videoTitle.textContent = 'TikTok Video';
-                        videoMeta.textContent = `URL: ${url}`;
-                        break;
-                    case 'facebook':
-                        videoThumbnail.src = 'https://www.facebook.com/images/fb_icon_325x325.png';
-                        videoTitle.textContent = 'Facebook Video';
-                        videoMeta.textContent = `URL: ${url}`;
-                        break;
-                    case 'reddit':
-                        videoThumbnail.src = 'https://www.redditstatic.com/desktop2x/img/favicon/android-icon-192x192.png';
-                        videoTitle.textContent = 'Reddit Video';
-                        videoMeta.textContent = `URL: ${url}`;
-                        break;
-                    default:
-                        videoThumbnail.src = 'https://via.placeholder.com/120x90?text=Video';
-                        videoTitle.textContent = 'Video';
-                        videoMeta.textContent = `URL: ${url}`;
-                        break;
-                }
-                videoInfo.classList.add('show');
-            }
-            
-            // Format video duration from seconds
-            function formatDuration(seconds) {
-                if (!seconds) return 'Bilinmeyen Süre';
-                
-                const hrs = Math.floor(seconds / 3600);
-                const mins = Math.floor((seconds % 3600) / 60);
-                const secs = Math.floor(seconds % 60);
-                
-                let result = '';
-                if (hrs > 0) {
-                    result += `${hrs}:`;
-                }
-                result += `${mins < 10 && hrs > 0 ? '0' : ''}${mins}:`;
-                result += `${secs < 10 ? '0' : ''}${secs}`;
-                
-                return result;
-            }
-            
-            // Show download options for YouTube video
-            function showYouTubeDownloadOptions(data) {
-                let html = '<h3>İndirme Seçenekleri</h3>';
-                html += '<div class="download-options">';
-                
-                // Video streams
-                const videoStreams = data.videoStreams || [];
-                const audioStreams = data.audioStreams || [];
-                
-                // 1080p or higher option
-                const highQualityStream = videoStreams.find(stream => stream.height >= 1080);
-                if (highQualityStream) {
-                    html += `
-                        <div class="download-option">
-                            <h3>${highQualityStream.height}p Video</h3>
-                            <p>${Math.round(highQualityStream.bitrate / 1000)} Kbps</p>
-                            <a href="${highQualityStream.url}" class="download-btn" download target="_blank">İndir</a>
-                        </div>
-                    `;
-                }
-                
-                // 720p option
-                const mediumQualityStream = videoStreams.find(stream => stream.height >= 720 && stream.height < 1080);
-                if (mediumQualityStream) {
-                    html += `
-                        <div class="download-option">
-                            <h3>720p Video</h3>
-                            <p>${Math.round(mediumQualityStream.bitrate / 1000)} Kbps</p>
-                            <a href="${mediumQualityStream.url}" class="download-btn" download target="_blank">İndir</a>
-                        </div>
-                    `;
-                }
-                
-                // 480p option
-                const lowQualityStream = videoStreams.find(stream => stream.height >= 480 && stream.height < 720);
-                if (lowQualityStream) {
-                    html += `
-                        <div class="download-option">
-                            <h3>480p Video</h3>
-                            <p>${Math.round(lowQualityStream.bitrate / 1000)} Kbps</p>
-                            <a href="${lowQualityStream.url}" class="download-btn" download target="_blank">İndir</a>
-                        </div>
-                    `;
-                }
-                
-                // 360p option
-                const lowestQualityStream = videoStreams.find(stream => stream.height <= 360);
-                if (lowestQualityStream) {
-                    html += `
-                        <div class="download-option">
-                            <h3>360p Video</h3>
-                            <p>${Math.round(lowestQualityStream.bitrate / 1000)} Kbps</p>
-                            <a href="${lowestQualityStream.url}" class="download-btn" download target="_blank">İndir</a>
-                        </div>
-                    `;
-                }
-                
-                // Audio option
-                const bestAudioStream = audioStreams.sort((a, b) => b.bitrate - a.bitrate)[0];
-                if (bestAudioStream) {
-                    html += `
-                        <div class="download-option">
-                            <h3>Sadece Ses</h3>
-                            <p>${Math.round(bestAudioStream.bitrate / 1000)} Kbps</p>
-                            <a href="${bestAudioStream.url}" class="download-btn" download target="_blank">İndir</a>
-                        </div>
-                    `;
-                }
-                
-                html += '</div>';
-                
-                // Direct download url if streams are not available
-                if (!videoStreams.length && !audioStreams.length && data.url) {
-                    html = `
-                        <h3>İndirme Seçenekleri</h3>
-                        <div class="download-options">
-                            <div class="download-option">
-                                <h3>Video İndir</h3>
-                                <p>En iyi kalitede</p>
-                                <a href="${data.url}" class="download-btn" download target="_blank">İndir</a>
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                // Alternative download URLs
-                html += `
-                    <h4 style="margin-top: 20px;">Alternatif İndirme Yöntemleri</h4>
-                    <div class="download-options">
-                        <div class="download-option">
-                            <h3>Y2mate ile İndir</h3>
-                            <a href="https://www.y2mate.com/youtube/${data.videoId || extractYouTubeVideoId(data.url)}" class="download-btn secondary" target="_blank">Y2mate'e Git</a>
-                        </div>
-                        <div class="download-option">
-                            <h3>SaveFrom ile İndir</h3>
-                            <a href="https://en.savefrom.net/18/#url=https://www.youtube.com/watch?v=${data.videoId || extractYouTubeVideoId(data.url)}" class="download-btn secondary" target="_blank">SaveFrom'a Git</a>
-                        </div>
-                    </div>
-                `;
-                
-                downloadOptions.innerHTML = html;
-            }
-            
-            // Show basic YouTube download options when API doesn't return full info
-            function showBasicYouTubeDownloadOptions(videoId) {
-                const html = `
-                    <h3>İndirme Seçenekleri</h3>
-                    <div class="download-options">
-                        <div class="download-option">
-                            <h3>1080p Video</h3>
-                            <p>Yüksek Kalite</p>
-                            <a href="https://projectlounge.pw/ytdl/download?url=https://www.youtube.com/watch?v=${videoId}&format=137" class="download-btn" target="_blank">İndir</a>
-                        </div>
-                        <div class="download-option">
-                            <h3>720p Video</h3>
-                            <p>Orta Kalite</p>
-                            <a href="https://projectlounge.pw/ytdl/download?url=https://www.youtube.com/watch?v=${videoId}&format=22" class="download-btn" target="_blank">İndir</a>
-                        </div>
-                        <div class="download-option">
-                            <h3>480p Video</h3>
-                            <p>Düşük Kalite</p>
-                            <a href="https://projectlounge.pw/ytdl/download?url=https://www.youtube.com/watch?v=${videoId}&format=18" class="download-btn" target="_blank">İndir</a>
-                        </div>
-                        <div class="download-option">
-                            <h3>Sadece Ses</h3>
-                            <p>MP3 Olarak</p>
-                            <a href="https://projectlounge.pw/ytdl/download?url=https://www.youtube.com/watch?v=${videoId}&format=bestaudio" class="download-btn" target="_blank">İndir</a>
-                        </div>
+            function showYouTubeOptions(videoId) {
+                // YouTube için indirme seçeneklerini görüntüle
+                const options = `
+                    <div class="quality-option">
+                        <h3>1080p (HD Kalite)</h3>
+                        <p>Yüksek kalite video (MP4)</p>
+                        <a href="https://loader.to/api/button/?url=https://www.youtube.com/watch?v=${videoId}&f=1080" target="_blank" class="download-btn">İndir</a>
                     </div>
                     
-                    <h4 style="margin-top: 20px;">Alternatif İndirme Yöntemleri</h4>
-                    <div class="download-options">
-                        <div class="download-option">
-                            <h3>Y2mate ile İndir</h3>
-                            <a href="https://www.y2mate.com/youtube/${videoId}" class="download-btn secondary" target="_blank">Y2mate'e Git</a>
-                        </div>
-                        <div class="download-option">
-                            <h3>SaveFrom ile İndir</h3>
-                            <a href="https://en.savefrom.net/18/#url=https://www.youtube.com/watch?v=${videoId}" class="download-btn secondary" target="_blank">SaveFrom'a Git</a>
-                        </div>
-                    </div>
-                `;
-                
-                downloadOptions.innerHTML = html;
-            }
-            
-            // Show Twitter download options
-            function showTwitterDownloadOptions(videoUrl) {
-                const html = `
-                    <h3>İndirme Seçenekleri</h3>
-                    <div class="download-options">
-                        <div class="download-option">
-                            <h3>En Yüksek Kalite</h3>
-                            <p>Direkt İndir</p>
-                            <a href="${videoUrl}" class="download-btn" download target="_blank">İndir</a>
-                        </div>
-                        
-                        <div class="download-option">
-                            <h3>Kaliteyi Seç</h3>
-                            <p>Tarayıcı ile Aç</p>
-                            <a href="${videoUrl}" class="download-btn secondary" target="_blank">Tarayıcıda Aç</a>
-                        </div>
-                    </div>
-                `;
-                
-                downloadOptions.innerHTML = html;
-            }
-            
-            // Show alternative Twitter download options
-            function showAlternativeTwitterOptions(url) {
-                const html = `
-                    <h3>Twitter İndirme Seçenekleri</h3>
-                    <div class="download-options">
-                        <div class="download-option">
-                            <h3>TwitterVideoDownloader</h3>
-                            <p>En İyi Kalite</p>
-                            <a href="https://twittervideodownloader.com/?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                        
-                        <div class="download-option">
-                            <h3>SaveTweetVid</h3>
-                            <p>Çoklu Kalite</p>
-                            <a href="https://www.savetweetvid.com/?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                        
-                        <div class="download-option">
-                            <h3>DownloadTwitterVideo</h3>
-                            <p>Kolay Kullanım</p>
-                            <a href="https://www.downloadtwittervideo.com/?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                    </div>
-                `;
-                
-                downloadOptions.innerHTML = html;
-            }
-            
-            // Show Instagram download options
-            function showInstagramDownloadOptions(url) {
-                const html = `
-                    <h3>Instagram İndirme Seçenekleri</h3>
-                    <div class="download-options">
-                        <div class="download-option">
-                            <h3>InstagramSave</h3>
-                            <p>Video/Reels</p>
-                            <a href="https://instagramsave.com/instagram-video-downloader?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                        
-                        <div class="download-option">
-                            <h3>SnapSave</h3>
-                            <p>Hikaye & Video</p>
-                            <a href="https://snapsave.app/instagram-reels-video-download?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                        
-                        <div class="download-option">
-                            <h3>igram.io</h3>
-                            <p>Fotoğraf & Video</p>
-                            <a href="https://igram.io/?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                    </div>
-                `;
-                
-                downloadOptions.innerHTML = html;
-            }
-            
-            // Show TikTok download options
-            function showTiktokDownloadOptions(url) {
-                const html = `
-                    <h3>TikTok İndirme Seçenekleri</h3>
-                    <div class="download-options">
-                        <div class="download-option">
-                            <h3>SSSTIK.io</h3>
-                            <p>Watermark Olmadan</p>
-                            <a href="https://ssstik.io/en?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                        
-                        <div class="download-option">
-                            <h3>SnapTik</h3>
-                            <p>Hızlı İndirme</p>
-                            <a href="https://snaptik.app/en?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                        
-                        <div class="download-option">
-                            <h3>TikMate</h3>
-                            <p>MP3 Seçeneği</p>
-                            <a href="https://tikmate.app/?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                    </div>
-                `;
-                
-                downloadOptions.innerHTML = html;
-            }
-            
-            // Show Facebook download options
-            function showFacebookDownloadOptions(url) {
-                const html = `
-                    <h3>Facebook İndirme Seçenekleri</h3>
-                    <div class="download-options">
-                        <div class="download-option">
-                            <h3>GetfVid</h3>
-                            <p>HD & SD Kalite</p>
-                            <a href="https://www.getfvid.com/downloader?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                        
-                        <div class="download-option">
-                            <h3>FBDownloader</h3>
-                            <p>Çoklu Kalite</p>
-                            <a href="https://fbdownloader.net/facebook-video-downloader/?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                        
-                        <div class="download-option">
-                            <h3>SaveFrom</h3>
-                            <p>Kolay Kullanım</p>
-                            <a href="https://en.savefrom.net/18/#url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                    </div>
-                `;
-                
-                downloadOptions.innerHTML = html;
-            }
-            
-            // Show Reddit download options
-            function showRedditDownloadOptions(url) {
-                const html = `
-                    <h3>Reddit İndirme Seçenekleri</h3>
-                    <div class="download-options">
-                        <div class="download-option">
-                            <h3>redditsave.com</h3>
-                            <p>Video ve GIF</p>
-                            <a href="https://redditsave.com/info?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                        
-                        <div class="download-option">
-                            <h3>redditmp4.xyz</h3>
-                            <p>MP4 Format</p>
-                            <a href="https://redditmp4.xyz/?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                    </div>
-                `;
-                
-                downloadOptions.innerHTML = html;
-            }
-            
-            // Show generic download options for unknown platforms
-            function showGenericDownloadOptions(url) {
-                const html = `
-                    <h3>Video İndirme Seçenekleri</h3>
-                    <div class="download-options">
-                        <div class="download-option">
-                            <h3>SaveFrom.net</h3>
-                            <p>Çoklu Platform Desteği</p>
-                            <a href="https://en.savefrom.net/18/#url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                        
-                        <div class="download-option">
-                            <h3>Y2mate.com</h3>
-                            <p>YouTube ve Diğerleri</p>
-                            <a href="https://www.y2mate.com/en394/download-youtube?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
-                        
-                        <div class="download-option">
-                            <h3>OnlineVideoConverter</h3>
-                            <p>MP4, MP3 ve Diğerleri</p>
-                            <a href="https://www.onlinevideoconverter.pro/youtube-converter?url=${encodeURIComponent(url)}" class="download-btn" target="_blank">Siteye Git</a>
-                        </div>
+                    <div class="quality-option">
+                        <h3>720p (HD Kalite)</h3>
+                        <p>Orta kalite video (MP4)</p>
+                        <a href="https://www.y2mate.com/youtube/${videoId}" target="_blank" class="download-btn">İndir</a>
                     </div>
                     
-                    <p style="margin-top: 15px;">
-                        <strong>Not:</strong> Bu URL otomatik olarak algılanamadı. Bağlantının doğru olduğundan emin olun veya belirli bir platform sekmesini seçin.
-                    </p>
+                    <div class="quality-option">
+                        <h3>480p (Normal Kalite)</h3>
+                        <p>Düşük kalite video (MP4)</p>
+                        <a href="https://en.savefrom.net/384/#url=https://youtube.com/watch?v=${videoId}" target="_blank" class="download-btn">İndir</a>
+                    </div>
+                    
+                    <div class="quality-option">
+                        <h3>MP3 Audio</h3>
+                        <p>Sadece ses (320kbps MP3)</p>
+                        <a href="https://loader.to/api/button/?url=https://www.youtube.com/watch?v=${videoId}&f=mp3" target="_blank" class="download-btn">İndir</a>
+                    </div>
                 `;
                 
-                downloadOptions.innerHTML = html;
+                youtubeOptions.innerHTML = options;
+                youtubeOptions.style.display = 'grid';
             }
         });
     </script>
