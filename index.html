@@ -1,120 +1,331 @@
-```html
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video İndirici</title>
+    <title>Gelişmiş Video İndirici</title>
     <style>
+        :root {
+            --primary-color: #4285f4;
+            --secondary-color: #34a853;
+            --accent-color: #ea4335;
+            --background-color: #f8f9fa;
+            --card-color: #ffffff;
+            --text-color: #202124;
+            --border-radius: 8px;
+        }
+        
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
+            padding: 0;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
         }
+        
         .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: white;
-            border-radius: 10px;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        
+        .card {
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
-        h1 {
-            color: #2196F3;
+        
+        .header {
             text-align: center;
+            margin-bottom: 20px;
         }
+        
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .tagline {
+            font-size: 16px;
+            color: #5f6368;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
         input, select, button {
             width: 100%;
             padding: 12px;
-            margin: 8px 0;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #dadce0;
+            border-radius: var(--border-radius);
+            font-size: 16px;
             box-sizing: border-box;
+            transition: border-color 0.2s;
         }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
         button {
-            background-color: #2196F3;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
+            font-weight: 500;
+            margin-top: 10px;
+            transition: background-color 0.2s;
         }
+        
         button:hover {
-            background-color: #0b7dda;
+            background-color: #3367d6;
         }
-        .status {
-            margin-top: 20px;
-            padding: 10px;
-            border-radius: 4px;
+        
+        .info {
+            font-size: 14px;
+            color: #5f6368;
+            margin-top: 5px;
         }
-        .success {
-            background-color: #dff0d8;
-            color: #3c763d;
-        }
-        .error {
-            background-color: #f2dede;
-            color: #a94442;
-        }
-        .loading {
-            background-color: #d9edf7;
-            color: #31708f;
-        }
-        .quality-info {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        .sites-list {
+        
+        .sites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
             margin-top: 20px;
         }
-        .sites-list a {
-            display: block;
-            padding: 10px;
-            margin: 5px 0;
-            background-color: #f1f1f1;
-            border-radius: 4px;
+        
+        .site-card {
+            background-color: var(--card-color);
+            border: 1px solid #dadce0;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            text-align: center;
             text-decoration: none;
-            color: #333;
-            font-weight: bold;
+            color: var(--text-color);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
-        .sites-list a:hover {
-            background-color: #e0e0e0;
+        
+        .site-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .site-card img {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 10px;
+        }
+        
+        .site-name {
+            font-weight: 500;
+        }
+        
+        .site-desc {
+            font-size: 12px;
+            color: #5f6368;
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: var(--border-radius);
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .status.success {
+            background-color: #e6f4ea;
+            color: var(--secondary-color);
+            display: block;
+        }
+        
+        .status.error {
+            background-color: #fce8e6;
+            color: var(--accent-color);
+            display: block;
+        }
+        
+        .status.loading {
+            background-color: #e8f0fe;
+            color: var(--primary-color);
+            display: block;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #5f6368;
+        }
+        
+        .disclaimer {
+            font-size: 12px;
+            background-color: #fef7e0;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 0 15px;
+                margin: 15px auto;
+            }
+            
+            .sites-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Video İndirici</h1>
-        
-        <div>
-            <p>İndirmek istediğiniz video URL'sini yapıştırın:</p>
-            <input type="text" id="videoUrl" placeholder="YouTube, Instagram veya TikTok URL'si">
-            <button id="openBtn">İNDİRME SİTESİNİ AÇ</button>
+        <div class="card header">
+            <h1>Gelişmiş Video İndirici</h1>
+            <p class="tagline">YouTube, Instagram, TikTok ve daha fazlasından video indirin</p>
         </div>
         
-        <div class="sites-list">
-            <p>Veya aşağıdaki indirme sitelerinden birini seçin:</p>
-            <a href="https://www.y2mate.com/" target="_blank">Y2Mate - YouTube İndirme</a>
-            <a href="https://savefrom.net/" target="_blank">SaveFrom - Çoklu Platform</a>
-            <a href="https://www.ssyoutube.com/" target="_blank">SSYouTube</a>
-            <a href="https://snapsave.app/" target="_blank">SnapSave - Instagram</a>
-            <a href="https://ssstik.io/" target="_blank">SSSTIK - TikTok</a>
+        <div class="card">
+            <div class="input-group">
+                <label for="videoUrl">Video URL'si:</label>
+                <input type="text" id="videoUrl" placeholder="Video URL'sini buraya yapıştırın">
+                <p class="info">YouTube, Instagram, TikTok, Facebook ve diğer platformların URL'leri desteklenir</p>
+            </div>
+            
+            <div class="input-group">
+                <label for="quality">İndirme Kalitesi:</label>
+                <select id="quality">
+                    <option value="high">Yüksek Kalite (1080p)</option>
+                    <option value="medium" selected>Orta Kalite (720p)</option>
+                    <option value="low">Düşük Kalite (480p/360p)</option>
+                    <option value="audio">Sadece Ses (MP3)</option>
+                </select>
+                <p class="info">Yüksek kalite videolar daha fazla veri kullanır ve indirme süresi uzayabilir</p>
+            </div>
+            
+            <button id="downloadBtn">İNDİRME SİTESİNE GİT</button>
+            
+            <div id="status" class="status"></div>
+        </div>
+        
+        <div class="card">
+            <h2>Popüler İndirme Servisleri</h2>
+            <p>Video indirmek için aşağıdaki güvenilir servisleri kullanabilirsiniz:</p>
+            
+            <div class="sites-grid">
+                <a href="https://www.y2mate.com/" target="_blank" class="site-card">
+                    <div class="site-name">Y2Mate</div>
+                    <div class="site-desc">YouTube videolarını indirin</div>
+                </a>
+                
+                <a href="https://savefrom.net/" target="_blank" class="site-card">
+                    <div class="site-name">SaveFrom</div>
+                    <div class="site-desc">Çok platformlu video indirici</div>
+                </a>
+                
+                <a href="https://www.ssyoutube.com/" target="_blank" class="site-card">
+                    <div class="site-name">SSYouTube</div>
+                    <div class="site-desc">YouTube için basit indirici</div>
+                </a>
+                
+                <a href="https://snapsave.app/" target="_blank" class="site-card">
+                    <div class="site-name">SnapSave</div>
+                    <div class="site-desc">Instagram için video indirici</div>
+                </a>
+                
+                <a href="https://ssstik.io/" target="_blank" class="site-card">
+                    <div class="site-name">SSSTIK</div>
+                    <div class="site-desc">TikTok video indirici</div>
+                </a>
+                
+                <a href="https://fbdown.net/" target="_blank" class="site-card">
+                    <div class="site-name">FBDown</div>
+                    <div class="site-desc">Facebook video indirici</div>
+                </a>
+            </div>
+            
+            <div class="disclaimer">
+                <strong>Yasal Uyarı:</strong> Lütfen sadece telif hakkı olmayan içerikleri veya kişisel kullanım için izin verilen içerikleri indirin. Telif hakkı olan içerikleri izinsiz indirmek yasal değildir.
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Video İndirici Uygulaması &copy; 2023</p>
         </div>
     </div>
-    
+
     <script>
-        document.getElementById('openBtn').addEventListener('click', function() {
-            const url = document.getElementById('videoUrl').value;
-            if (!url) {
-                alert('Lütfen bir video URL\'si girin!');
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            const videoUrl = document.getElementById('videoUrl').value.trim();
+            const quality = document.getElementById('quality').value;
+            const statusDiv = document.getElementById('status');
+            
+            if (!videoUrl) {
+                statusDiv.innerHTML = 'Lütfen bir video URL\'si girin!';
+                statusDiv.className = 'status error';
                 return;
             }
             
-            // URL'yi y2mate.com'a gönder
-            window.open('https://www.y2mate.com/youtube/' + encodeURIComponent(url), '_blank');
+            statusDiv.innerHTML = 'İndirme servisi hazırlanıyor...';
+            statusDiv.className = 'status loading';
+            
+            // URL'yi işle ve platformu tespit et
+            let targetUrl = '';
+            
+            if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
+                targetUrl = 'https://www.y2mate.com/youtube/' + extractVideoId(videoUrl);
+            } else if (videoUrl.includes('instagram.com')) {
+                targetUrl = 'https://snapsave.app/' + encodeURIComponent(videoUrl);
+            } else if (videoUrl.includes('tiktok.com')) {
+                targetUrl = 'https://ssstik.io/en';
+            } else if (videoUrl.includes('facebook.com') || videoUrl.includes('fb.watch')) {
+                targetUrl = 'https://fbdown.net/';
+            } else {
+                targetUrl = 'https://savefrom.net/#url=' + encodeURIComponent(videoUrl);
+            }
+            
+            // MP3 seçilmişse YouTube için özel URL
+            if (quality === 'audio' && (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be'))) {
+                targetUrl = 'https://www.y2mate.com/youtube-mp3/' + extractVideoId(videoUrl);
+            }
+            
+            // İndirme sitesini yeni sekmede aç
+            window.open(targetUrl, '_blank');
+            
+            statusDiv.innerHTML = 'İndirme sitesi yeni sekmede açıldı! Video URL\'si kopyalandı, gerekirse yapıştırabilirsiniz.';
+            statusDiv.className = 'status success';
+            
+            // URL'yi panoya kopyala (bazı indirme siteleri için kolaylık sağlar)
+            navigator.clipboard.writeText(videoUrl).catch(err => console.error('URL kopyalanamadı:', err));
         });
+        
+        // YouTube video ID'sini çıkarma fonksiyonu
+        function extractVideoId(url) {
+            let videoId = '';
+            
+            // YouTube normal URL formatı
+            if (url.includes('youtube.com/watch')) {
+                const urlParams = new URLSearchParams(new URL(url).search);
+                videoId = urlParams.get('v') || '';
+            } 
+            // YouTube kısa URL formatı
+            else if (url.includes('youtu.be/')) {
+                videoId = url.split('youtu.be/')[1]?.split('?')[0] || '';
+            }
+            
+            return videoId || encodeURIComponent(url);
+        }
     </script>
 </body>
 </html>
-```
