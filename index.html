@@ -3,329 +3,320 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gelişmiş Video İndirici</title>
+    <title>Direkt Video İndirici</title>
     <style>
-        :root {
-            --primary-color: #4285f4;
-            --secondary-color: #34a853;
-            --accent-color: #ea4335;
-            --background-color: #f8f9fa;
-            --card-color: #ffffff;
-            --text-color: #202124;
-            --border-radius: 8px;
-        }
-        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background-color: #f5f5f5;
             margin: 0;
             padding: 0;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
+            color: #333;
         }
-        
         .container {
             max-width: 800px;
-            margin: 20px auto;
-            padding: 0 20px;
-        }
-        
-        .card {
-            background-color: var(--card-color);
-            border-radius: var(--border-radius);
+            margin: 0 auto;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
         }
-        
         .header {
+            background-color: #4285f4;
+            color: white;
+            padding: 20px;
             text-align: center;
-            margin-bottom: 20px;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 0;
         }
-        
+        .content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
         h1 {
-            color: var(--primary-color);
             margin: 0;
-            font-weight: 600;
+            font-size: 24px;
         }
-        
-        .tagline {
-            font-size: 16px;
-            color: #5f6368;
-        }
-        
-        .input-group {
-            margin-bottom: 15px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        
         input, select, button {
+            display: block;
             width: 100%;
             padding: 12px;
-            border: 1px solid #dadce0;
-            border-radius: var(--border-radius);
-            font-size: 16px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             box-sizing: border-box;
-            transition: border-color 0.2s;
+            font-size: 16px;
         }
-        
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-        
         button {
-            background-color: var(--primary-color);
+            background-color: #4285f4;
             color: white;
             border: none;
             cursor: pointer;
-            font-weight: 500;
-            margin-top: 10px;
+            font-weight: bold;
             transition: background-color 0.2s;
         }
-        
         button:hover {
-            background-color: #3367d6;
+            background-color: #3b78e7;
         }
-        
-        .info {
-            font-size: 14px;
-            color: #5f6368;
-            margin-top: 5px;
-        }
-        
-        .sites-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 15px;
+        #statusBox {
             margin-top: 20px;
-        }
-        
-        .site-card {
-            background-color: var(--card-color);
-            border: 1px solid #dadce0;
-            border-radius: var(--border-radius);
             padding: 15px;
-            text-align: center;
-            text-decoration: none;
-            color: var(--text-color);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .site-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .site-card img {
-            width: 40px;
-            height: 40px;
-            margin-bottom: 10px;
-        }
-        
-        .site-name {
-            font-weight: 500;
-        }
-        
-        .site-desc {
-            font-size: 12px;
-            color: #5f6368;
-        }
-        
-        .status {
-            padding: 15px;
-            border-radius: var(--border-radius);
-            margin-top: 15px;
+            border-radius: 4px;
+            background-color: #e8f0fe;
             display: none;
         }
-        
-        .status.success {
-            background-color: #e6f4ea;
-            color: var(--secondary-color);
-            display: block;
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #4285f4;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+            display: none;
         }
-        
-        .status.error {
-            background-color: #fce8e6;
-            color: var(--accent-color);
-            display: block;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-        
-        .status.loading {
-            background-color: #e8f0fe;
-            color: var(--primary-color);
-            display: block;
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            font-size: 14px;
-            color: #5f6368;
-        }
-        
-        .disclaimer {
-            font-size: 12px;
-            background-color: #fef7e0;
-            padding: 10px 15px;
-            border-radius: var(--border-radius);
+        #downloadBtn {
             margin-top: 10px;
         }
-        
-        @media (max-width: 600px) {
-            .container {
-                padding: 0 15px;
-                margin: 15px auto;
-            }
-            
-            .sites-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card header">
-            <h1>Gelişmiş Video İndirici</h1>
-            <p class="tagline">YouTube, Instagram, TikTok ve daha fazlasından video indirin</p>
+        <div class="header">
+            <h1>Direkt Video İndirici</h1>
+            <p>YouTube, Instagram, TikTok, Twitter, Facebook ve daha fazlası</p>
         </div>
-        
-        <div class="card">
-            <div class="input-group">
+        <div class="content">
+            <div>
                 <label for="videoUrl">Video URL'si:</label>
-                <input type="text" id="videoUrl" placeholder="Video URL'sini buraya yapıştırın">
-                <p class="info">YouTube, Instagram, TikTok, Facebook ve diğer platformların URL'leri desteklenir</p>
-            </div>
-            
-            <div class="input-group">
+                <input type="text" id="videoUrl" placeholder="https://www.youtube.com/watch?v=XXXX">
+                
                 <label for="quality">İndirme Kalitesi:</label>
                 <select id="quality">
-                    <option value="high">Yüksek Kalite (1080p)</option>
-                    <option value="medium" selected>Orta Kalite (720p)</option>
-                    <option value="low">Düşük Kalite (480p/360p)</option>
-                    <option value="audio">Sadece Ses (MP3)</option>
+                    <option value="highest">En Yüksek Kalite</option>
+                    <option value="1080p">1080p</option>
+                    <option value="720p" selected>720p</option>
+                    <option value="480p">480p</option>
+                    <option value="mp3">Sadece Ses (MP3)</option>
                 </select>
-                <p class="info">Yüksek kalite videolar daha fazla veri kullanır ve indirme süresi uzayabilir</p>
+                
+                <button id="analyzeBtn">VİDEO ANALİZ ET</button>
+                
+                <div id="statusBox"></div>
+                <div class="spinner" id="spinner"></div>
+                
+                <div id="downloadSection" class="hidden">
+                    <h3>İndirme Seçenekleri</h3>
+                    <div id="downloadOptions"></div>
+                </div>
             </div>
-            
-            <button id="downloadBtn">İNDİRME SİTESİNE GİT</button>
-            
-            <div id="status" class="status"></div>
-        </div>
-        
-        <div class="card">
-            <h2>Popüler İndirme Servisleri</h2>
-            <p>Video indirmek için aşağıdaki güvenilir servisleri kullanabilirsiniz:</p>
-            
-            <div class="sites-grid">
-                <a href="https://www.y2mate.com/" target="_blank" class="site-card">
-                    <div class="site-name">Y2Mate</div>
-                    <div class="site-desc">YouTube videolarını indirin</div>
-                </a>
-                
-                <a href="https://savefrom.net/" target="_blank" class="site-card">
-                    <div class="site-name">SaveFrom</div>
-                    <div class="site-desc">Çok platformlu video indirici</div>
-                </a>
-                
-                <a href="https://www.ssyoutube.com/" target="_blank" class="site-card">
-                    <div class="site-name">SSYouTube</div>
-                    <div class="site-desc">YouTube için basit indirici</div>
-                </a>
-                
-                <a href="https://snapsave.app/" target="_blank" class="site-card">
-                    <div class="site-name">SnapSave</div>
-                    <div class="site-desc">Instagram için video indirici</div>
-                </a>
-                
-                <a href="https://ssstik.io/" target="_blank" class="site-card">
-                    <div class="site-name">SSSTIK</div>
-                    <div class="site-desc">TikTok video indirici</div>
-                </a>
-                
-                <a href="https://fbdown.net/" target="_blank" class="site-card">
-                    <div class="site-name">FBDown</div>
-                    <div class="site-desc">Facebook video indirici</div>
-                </a>
-            </div>
-            
-            <div class="disclaimer">
-                <strong>Yasal Uyarı:</strong> Lütfen sadece telif hakkı olmayan içerikleri veya kişisel kullanım için izin verilen içerikleri indirin. Telif hakkı olan içerikleri izinsiz indirmek yasal değildir.
-            </div>
-        </div>
-        
-        <div class="footer">
-            <p>Video İndirici Uygulaması &copy; 2023</p>
         </div>
     </div>
 
     <script>
-        document.getElementById('downloadBtn').addEventListener('click', function() {
-            const videoUrl = document.getElementById('videoUrl').value.trim();
-            const quality = document.getElementById('quality').value;
-            const statusDiv = document.getElementById('status');
+        document.addEventListener('DOMContentLoaded', function() {
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const videoUrlInput = document.getElementById('videoUrl');
+            const qualitySelect = document.getElementById('quality');
+            const statusBox = document.getElementById('statusBox');
+            const spinner = document.getElementById('spinner');
+            const downloadSection = document.getElementById('downloadSection');
+            const downloadOptions = document.getElementById('downloadOptions');
             
-            if (!videoUrl) {
-                statusDiv.innerHTML = 'Lütfen bir video URL\'si girin!';
-                statusDiv.className = 'status error';
-                return;
+            // URL'den video ID'sini çıkar
+            function getYoutubeId(url) {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+                const match = url.match(regExp);
+                return (match && match[2].length === 11) ? match[2] : null;
             }
             
-            statusDiv.innerHTML = 'İndirme servisi hazırlanıyor...';
-            statusDiv.className = 'status loading';
-            
-            // URL'yi işle ve platformu tespit et
-            let targetUrl = '';
-            
-            if (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be')) {
-                targetUrl = 'https://www.y2mate.com/youtube/' + extractVideoId(videoUrl);
-            } else if (videoUrl.includes('instagram.com')) {
-                targetUrl = 'https://snapsave.app/' + encodeURIComponent(videoUrl);
-            } else if (videoUrl.includes('tiktok.com')) {
-                targetUrl = 'https://ssstik.io/en';
-            } else if (videoUrl.includes('facebook.com') || videoUrl.includes('fb.watch')) {
-                targetUrl = 'https://fbdown.net/';
-            } else {
-                targetUrl = 'https://savefrom.net/#url=' + encodeURIComponent(videoUrl);
+            // URL'nin tipini belirle
+            function getUrlType(url) {
+                if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                    return 'youtube';
+                } else if (url.includes('instagram.com')) {
+                    return 'instagram';
+                } else if (url.includes('tiktok.com')) {
+                    return 'tiktok';
+                } else if (url.includes('twitter.com') || url.includes('x.com')) {
+                    return 'twitter';
+                } else if (url.includes('facebook.com') || url.includes('fb.watch')) {
+                    return 'facebook';
+                } else {
+                    return 'unknown';
+                }
             }
             
-            // MP3 seçilmişse YouTube için özel URL
-            if (quality === 'audio' && (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be'))) {
-                targetUrl = 'https://www.y2mate.com/youtube-mp3/' + extractVideoId(videoUrl);
+            // URL API'sini oluştur
+            function getApiUrl(url, quality) {
+                const urlType = getUrlType(url);
+                
+                switch(urlType) {
+                    case 'youtube':
+                        const videoId = getYoutubeId(url);
+                        if (!videoId) return null;
+                        
+                        if (quality === 'mp3') {
+                            // MP3 indirme için doğrudan URL
+                            return `https://www.yt-download.org/api/button/mp3/${videoId}`;
+                        } else {
+                            // Video indirme için doğrudan URL
+                            return `https://www.yt-download.org/api/button/videos/${videoId}`;
+                        }
+                    case 'instagram':
+                        return `https://instadownloader.co/api/ig?url=${encodeURIComponent(url)}`;
+                    case 'tiktok':
+                        return `https://ssstik.io/api/tiktok?url=${encodeURIComponent(url)}`;
+                    case 'twitter':
+                        return `https://twitsave.com/info?url=${encodeURIComponent(url)}`;
+                    case 'facebook':
+                        return `https://fbdownloader.net/api/analyze?url=${encodeURIComponent(url)}`;
+                    default:
+                        return `https://api.onlinevideoconverter.pro/api/convert?url=${encodeURIComponent(url)}`;
+                }
             }
             
-            // İndirme sitesini yeni sekmede aç
-            window.open(targetUrl, '_blank');
+            // Analiz butonuna tıklandığında
+            analyzeBtn.addEventListener('click', function() {
+                const videoUrl = videoUrlInput.value.trim();
+                const quality = qualitySelect.value;
+                
+                if (!videoUrl) {
+                    showStatus('Lütfen bir video URL\'si girin!', 'error');
+                    return;
+                }
+                
+                showStatus('Video analiz ediliyor...', 'info');
+                spinner.style.display = 'block';
+                downloadSection.classList.add('hidden');
+                
+                const urlType = getUrlType(videoUrl);
+                
+                if (urlType === 'youtube') {
+                    // YouTube için direkt indirme linkleri göster
+                    const videoId = getYoutubeId(videoUrl);
+                    if (!videoId) {
+                        showStatus('Geçersiz YouTube URL\'si!', 'error');
+                        spinner.style.display = 'none';
+                        return;
+                    }
+                    
+                    spinner.style.display = 'none';
+                    statusBox.style.display = 'block';
+                    statusBox.innerHTML = 'Video analiz edildi! İndirme seçenekleri hazır.';
+                    downloadSection.classList.remove('hidden');
+                    
+                    // Kalite seçimine göre indirme butonlarını hazırla
+                    let buttonsHtml = '';
+                    
+                    if (quality === 'mp3') {
+                        // MP3 seçenekleri
+                        buttonsHtml += `
+                            <p>Ses kalitesi seçenekleri:</p>
+                            <button onclick="window.location.href='https://www.y2mate.com/youtube-mp3/${videoId}'">
+                                MP3 İndir (320kbps)
+                            </button>
+                            <button onclick="window.location.href='https://www.yt-download.org/api/button/mp3/${videoId}'">
+                                MP3 İndir (Yüksek Kalite)
+                            </button>
+                        `;
+                    } else {
+                        // Video seçenekleri
+                        buttonsHtml += `<p>Video kalitesi seçenekleri:</p>`;
+                        
+                        // 1080p ve üstü
+                        if (quality === 'highest' || quality === '1080p') {
+                            buttonsHtml += `
+                                <button onclick="window.location.href='https://www.y2mate.com/youtube/${videoId}'">
+                                    1080p/2K/4K İndir
+                                </button>
+                            `;
+                        }
+                        
+                        // 720p
+                        if (quality === 'highest' || quality === '1080p' || quality === '720p') {
+                            buttonsHtml += `
+                                <button onclick="window.location.href='https://www.yt-download.org/api/button/mp4/${videoId}/720'">
+                                    720p MP4 İndir
+                                </button>
+                            `;
+                        }
+                        
+                        // 480p
+                        buttonsHtml += `
+                            <button onclick="window.location.href='https://www.yt-download.org/api/button/mp4/${videoId}/480'">
+                                480p MP4 İndir
+                            </button>
+                        `;
+                        
+                        // 360p
+                        buttonsHtml += `
+                            <button onclick="window.location.href='https://www.yt-download.org/api/button/mp4/${videoId}/360'">
+                                360p MP4 İndir (En Uyumlu)
+                            </button>
+                        `;
+                    }
+                    
+                    downloadOptions.innerHTML = buttonsHtml;
+                } else {
+                    // Diğer platformlar için uygun servise yönlendir
+                    let directUrl = '';
+                    
+                    switch(urlType) {
+                        case 'instagram':
+                            directUrl = `https://instadownloader.co/${videoUrl}`;
+                            break;
+                        case 'tiktok':
+                            directUrl = `https://ssstik.io/en?url=${encodeURIComponent(videoUrl)}`;
+                            break;
+                        case 'twitter':
+                            directUrl = `https://twitsave.com/info?url=${encodeURIComponent(videoUrl)}`;
+                            break;
+                        case 'facebook':
+                            directUrl = `https://fbdownloader.net/facebook-video-downloader/?url=${encodeURIComponent(videoUrl)}`;
+                            break;
+                        default:
+                            directUrl = `https://www.y2mate.com/en394/download-youtube?url=${encodeURIComponent(videoUrl)}`;
+                    }
+                    
+                    spinner.style.display = 'none';
+                    statusBox.style.display = 'block';
+                    statusBox.innerHTML = `${urlType.toUpperCase()} bağlantısı algılandı! İndirme seçenekleri hazır.`;
+                    downloadSection.classList.remove('hidden');
+                    
+                    // Platform için direkt indirme butonu
+                    const serviceButtonHtml = `
+                        <button onclick="window.location.href='${directUrl}'">
+                            ${urlType.toUpperCase()} Video İndir
+                        </button>
+                    `;
+                    
+                    downloadOptions.innerHTML = serviceButtonHtml;
+                }
+            });
             
-            statusDiv.innerHTML = 'İndirme sitesi yeni sekmede açıldı! Video URL\'si kopyalandı, gerekirse yapıştırabilirsiniz.';
-            statusDiv.className = 'status success';
-            
-            // URL'yi panoya kopyala (bazı indirme siteleri için kolaylık sağlar)
-            navigator.clipboard.writeText(videoUrl).catch(err => console.error('URL kopyalanamadı:', err));
+            // Durum mesajını göster
+            function showStatus(message, type = 'info') {
+                statusBox.style.display = 'block';
+                statusBox.innerHTML = message;
+                
+                if (type === 'error') {
+                    statusBox.style.backgroundColor = '#f2dede';
+                    statusBox.style.color = '#a94442';
+                } else if (type === 'success') {
+                    statusBox.style.backgroundColor = '#dff0d8';
+                    statusBox.style.color = '#3c763d';
+                } else {
+                    statusBox.style.backgroundColor = '#e8f0fe';
+                    statusBox.style.color = '#31708f';
+                }
+            }
         });
-        
-        // YouTube video ID'sini çıkarma fonksiyonu
-        function extractVideoId(url) {
-            let videoId = '';
-            
-            // YouTube normal URL formatı
-            if (url.includes('youtube.com/watch')) {
-                const urlParams = new URLSearchParams(new URL(url).search);
-                videoId = urlParams.get('v') || '';
-            } 
-            // YouTube kısa URL formatı
-            else if (url.includes('youtu.be/')) {
-                videoId = url.split('youtu.be/')[1]?.split('?')[0] || '';
-            }
-            
-            return videoId || encodeURIComponent(url);
-        }
     </script>
 </body>
 </html>
